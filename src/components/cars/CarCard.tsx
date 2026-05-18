@@ -29,7 +29,7 @@ export default function CarCard({ car }: CarCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-48 w-full">
         <Image
-          src={car.main_image_url}
+          src={car.mainImageUrl}
           alt={car.title}
           fill
           className="object-cover"
@@ -37,7 +37,7 @@ export default function CarCard({ car }: CarCardProps) {
         />
         <div className="absolute top-3 left-3 flex gap-2">
           <Badge variant="default">{car.category}</Badge>
-          {car.chauffeur_available && (
+          {car.chauffeurAvailable && (
             <Badge variant="warning">
               <UserCheck className="h-3 w-3 mr-1" /> Chauffeur
             </Badge>
@@ -57,12 +57,12 @@ export default function CarCard({ car }: CarCardProps) {
             <Settings2 className="h-3.5 w-3.5" /> {transmissionLabels[car.transmission]}
           </span>
           <span className="flex items-center gap-1">
-            <Fuel className="h-3.5 w-3.5" /> {fuelLabels[car.fuel_type]}
+            <Fuel className="h-3.5 w-3.5" /> {fuelLabels[car.fuelType]}
           </span>
         </div>
         <div className="flex items-center justify-between mt-4">
           <div>
-            <span className="text-2xl font-bold text-[#1a1f36]">{formatCurrency(car.price_per_day)}</span>
+            <span className="text-2xl font-bold text-[#1a1f36]">{formatCurrency(car.pricePerDay)}</span>
             <span className="text-gray-400 text-sm">/jour</span>
           </div>
           <Link href={`/cars/${car.slug}`}>

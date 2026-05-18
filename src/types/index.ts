@@ -7,6 +7,13 @@ export interface User {
   created_at: string;
 }
 
+export interface CarImage {
+  id: string;
+  car_id: string;
+  image_url: string;
+  position: number;
+}
+
 export interface Car {
   id: string;
   slug: string;
@@ -16,27 +23,60 @@ export interface Car {
   year: number;
   category: string;
   city: string;
-  price_per_day: number;
-  deposit_amount: number;
-  chauffeur_available: boolean;
-  chauffeur_price_per_day: number;
+  pricePerDay: number;
+  depositAmount: number;
+  chauffeurAvailable: boolean;
+  chauffeurPricePerDay: number;
   transmission: 'manual' | 'automatic';
-  fuel_type: 'petrol' | 'diesel' | 'electric' | 'hybrid';
+  fuelType: 'petrol' | 'diesel' | 'electric' | 'hybrid';
   seats: number;
   description: string;
-  main_image_url: string;
-  images?: CarImage[];
+  mainImageUrl: string;
+  images: string[];
+  pickupZone: string;
+  includedZones: string[];
+  features: string[];
+  rentalPolicy: string;
+  cancellationPolicy: string;
+  whatsappPhone: string;
   status: 'draft' | 'active' | 'unavailable' | 'archived';
   created_at: string;
 }
 
-export interface CarImage {
+export interface ReservationRequest {
   id: string;
-  car_id: string;
-  image_url: string;
-  position: number;
+  car_id?: string;
+  car_slug?: string;
+  car_title?: string;
+  full_name: string;
+  phone: string;
+  email: string;
+  start_date: string;
+  end_date: string;
+  pickup_location: string;
+  with_chauffeur: boolean;
+  message: string;
+  status: 'new' | 'contacted' | 'confirmed' | 'cancelled';
+  created_at: string;
 }
 
+export interface CustomRequest {
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string;
+  start_date: string;
+  end_date: string;
+  city: string;
+  budget: string;
+  vehicle_type: string;
+  with_chauffeur: boolean;
+  message: string;
+  status: 'new' | 'contacted' | 'confirmed' | 'cancelled';
+  created_at: string;
+}
+
+// Legacy type alias for backward compat with existing booking pages
 export interface Booking {
   id: string;
   user_id: string;
