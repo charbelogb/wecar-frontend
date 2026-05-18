@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WeCar Frontend — Ultra-simple MVP
 
-## Getting Started
+Location de voitures au Bénin — site vitrine + génération de leads avec confirmation WhatsApp.
 
-First, run the development server:
+## Scope du MVP
+
+Ce projet est un **ultra-MVP** : site vitrine + catalogue + formulaires de demande + confirmation WhatsApp.  
+Il n'y a **pas** de paiement automatique, pas d'auth, pas de dashboard client ou admin dans ce repo.
+
+### Flux utilisateur
+
+1. L'utilisateur parcourt le catalogue **ou** décrit son besoin
+2. Il envoie une demande (formulaire simple, aucun paiement)
+3. L'équipe WeCar confirme la disponibilité **par WhatsApp** (sous 2h)
+4. Le paiement s'effectue après confirmation, de façon semi-manuelle
+
+### Pages
+
+| Route | Description |
+|---|---|
+| `/` | Landing page |
+| `/cars` | Catalogue avec filtres |
+| `/cars/[slug]` | Fiche véhicule complète |
+| `/reserve/[slug]` | Formulaire de demande de réservation |
+| `/request` | Formulaire "décrire mon besoin" |
+| `/reservation-success` | Page de confirmation + CTA WhatsApp |
+| `/faq` | Questions fréquentes |
+| `/contact` | Page de contact |
+
+## Stack technique
+
+- **Next.js 15** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **Radix UI / shadcn components**
+- Données mockées en local (aucune dépendance backend pour naviguer)
+
+## Installation et démarrage
 
 ```bash
+# Installer les dépendances
+npm install
+
+# Copier les variables d'environnement
+cp .env.local.example .env.local
+# Renseigner NEXT_PUBLIC_WHATSAPP_NUMBER dans .env.local
+
+# Lancer en développement
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variables d'environnement
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description | Exemple |
+|---|---|---|
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Numéro WhatsApp (sans + ni espaces) | `22997000000` |
 
-## Learn More
+## Ce qui est exclu de ce MVP
 
-To learn more about Next.js, take a look at the following resources:
+- Authentification (pas de login/register exposé dans la navigation)
+- Dashboard client
+- Dashboard admin
+- Paiement automatique
+- Backend API (toutes les données sont mockées localement)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure des données
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Les véhicules sont définis dans `src/lib/mock-data.ts` et typés dans `src/types/index.ts`.  
+Pour ajouter un véhicule, il suffit d'ajouter une entrée dans le tableau `mockCars`.
 
-## Deploy on Vercel
+## Déploiement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Compatible avec Vercel, Netlify ou tout hébergeur Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm run start
+```
