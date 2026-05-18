@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const statusLabels: Record<string, string> = {
@@ -27,8 +27,9 @@ const statusVariants: Record<string, 'default' | 'warning' | 'success' | 'destru
   completed: 'secondary',
 };
 
-export default function BookingDetailPage({ params }: PageProps) {
-  const booking = mockBookings.find((b) => b.id === params.id);
+export default async function BookingDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const booking = mockBookings.find((b) => b.id === id);
   if (!booking) notFound();
 
   return (

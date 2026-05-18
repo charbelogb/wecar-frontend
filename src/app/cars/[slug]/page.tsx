@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Users, Fuel, Settings2, Calendar, Shield } from 'lucide-react';
 import { getCarBySlug } from '@/lib/api';
@@ -8,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const fuelLabels: Record<string, string> = {
@@ -19,7 +20,8 @@ const fuelLabels: Record<string, string> = {
 };
 
 export default async function CarDetailPage({ params }: PageProps) {
-  const car = await getCarBySlug(params.slug);
+  const { slug } = await params;
+  const car = await getCarBySlug(slug);
 
   if (!car) {
     notFound();
@@ -30,7 +32,7 @@ export default async function CarDetailPage({ params }: PageProps) {
       <div className="bg-[#1a1f36] text-white py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <nav className="text-sm text-gray-400 mb-2">
-            <a href="/cars" className="hover:text-white">Nos voitures</a> / <span className="text-white">{car.title}</span>
+            <Link href="/cars" className="hover:text-white">Nos voitures</Link> / <span className="text-white">{car.title}</span>
           </nav>
           <h1 className="text-3xl font-bold">{car.title}</h1>
         </div>

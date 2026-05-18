@@ -7,11 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 interface PageProps {
-  params: { bookingId: string };
+  params: Promise<{ bookingId: string }>;
 }
 
-export default function CheckoutPage({ params }: PageProps) {
-  const booking = mockBookings.find((b) => b.id === params.bookingId) || mockBookings[0];
+export default async function CheckoutPage({ params }: PageProps) {
+  const { bookingId } = await params;
+  const booking = mockBookings.find((b) => b.id === bookingId) || mockBookings[0];
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">

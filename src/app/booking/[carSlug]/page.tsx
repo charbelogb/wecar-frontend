@@ -8,11 +8,12 @@ import BookingForm from '@/components/booking/BookingForm';
 import { Badge } from '@/components/ui/badge';
 
 interface PageProps {
-  params: { carSlug: string };
+  params: Promise<{ carSlug: string }>;
 }
 
 export default async function BookingPage({ params }: PageProps) {
-  const car = await getCarBySlug(params.carSlug);
+  const { carSlug } = await params;
+  const car = await getCarBySlug(carSlug);
   if (!car) notFound();
 
   return (

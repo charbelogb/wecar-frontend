@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -14,12 +14,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function EditCarPage({ params }: PageProps) {
   const router = useRouter();
-  const car = mockCars.find((c) => c.id === params.id) || mockCars[0];
+  const { id } = use(params);
+  const car = mockCars.find((c) => c.id === id) || mockCars[0];
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     title: car.title,
@@ -46,7 +47,7 @@ export default function EditCarPage({ params }: PageProps) {
     e.preventDefault();
     setLoading(true);
     try {
-      await updateCar(params.id, {
+      await updateCar(id, {
         ...form,
         year: parseInt(form.year),
         price_per_day: parseInt(form.price_per_day),

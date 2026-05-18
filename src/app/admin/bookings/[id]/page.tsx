@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { mockBookings } from '@/lib/mock-data';
@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { Booking } from '@/types';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const statusLabels: Record<string, string> = {
@@ -26,7 +26,8 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function AdminBookingDetailPage({ params }: PageProps) {
-  const initialBooking = mockBookings.find((b) => b.id === params.id) || mockBookings[0];
+  const { id } = use(params);
+  const initialBooking = mockBookings.find((b) => b.id === id) || mockBookings[0];
   const [booking, setBooking] = useState(initialBooking);
   const [newStatus, setNewStatus] = useState(booking.booking_status);
   const [loading, setLoading] = useState(false);
