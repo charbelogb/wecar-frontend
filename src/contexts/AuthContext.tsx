@@ -26,24 +26,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
+      // Ensure cookie is in sync with localStorage (e.g. after page refresh)
+      document.cookie = `wecar_token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
     }
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const { user: u, token: t } = await loginUser(email, password);
+  const setAuth = (u: User, t: string) => {
     setUser(u);
     setToken(t);
     localStorage.setItem('wecar_token', t);
     localStorage.setItem('wecar_user', JSON.stringify(u));
+    // Also set cookie so middleware can protect routes
+    document.cookie = `wecar_token=${t}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+  };
+
+  const login = async (email: string, password: string) => {
+    const { user: u, token: t } = await loginUser(email, password);
+    setAuth(u, t);
   };
 
   const register = async (data: { full_name: string; email: string; phone: string; password: string }) => {
     const { user: u, token: t } = await registerUser(data);
-    setUser(u);
-    setToken(t);
-    localStorage.setItem('wecar_token', t);
-    localStorage.setItem('wecar_user', JSON.stringify(u));
+    setAuth(u, t);
   };
 
   const logout = () => {
@@ -51,6 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null);
     localStorage.removeItem('wecar_token');
     localStorage.removeItem('wecar_user');
+    // Clear the auth cookie
+    document.cookie = 'wecar_token=; path=/; max-age=0; SameSite=Lax';
   };
 
   return (
